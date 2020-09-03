@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>とあるユーザさんのスコア推移</title>
+<link href="c3.css" rel="stylesheet"><!-- c3.css を読み込む -->
+<script type="text/javascript" src="jquery-3.5.1.min.js"></script>
+<style>
+.c3-axis-y text 
+{
+     font-size: 15px; 
+}
+.c3-axis-x text 
+{
+     font-size: 15px; 
+}
+
+.c3-legend-item text 
+{
+     font-size: 20px; 
+}
+
+table.c3-tooltip{
+font-size:150px;
+} 
+</style>
+</head>
+<body>
+
+<div id="my-chart"></div>
+<form>
+<input type="checkbox" name="check" value="睡眠" id="sleep" checked="checked">睡眠
+<input type="checkbox" name="check" value="意欲" id="motivation" checked="checked">意欲
+<input type="checkbox" name="check" value="感情" id="emotion" checked="checked">感情
+<input type="checkbox" name="check" value="健康" id="health" checked="checked">健康
+<input type="checkbox" name="check" value="記憶" id="memory" checked="checked">記憶
+<input type="checkbox" name="check" value="社交" id="socialization" checked="checked">社交
+<input type="checkbox" name="check" value="心理" id="psychology" checked="checked">心理
+<input type="checkbox" name="check" value="data1" id="data1">data1
+
+</form>
+
+
+<script src="d3.min.js"></script><!-- D3.js を読み込む -->
+<script src="c3.min.js"></script><!-- C3.js を読み込む -->
+<script>
+
+//データを流し込む
+var datasets = [
+  ['mydate', '27', '28', '29', '30', '31', '32', '33', '34'],
+  ['睡眠', 0.456, 0.333, 0.643, 0.552, 0.589, 0.668, 0.449, 0.527],
+  ['意欲', 0.123, 0.129, 0.136, -0.154, -0.192, 0.209, 0.217, 0.454],
+  ['感情', -0.139, 0.144, -0.147, -0.150, 0.164, -0.64, 0.170, 0.436],
+  ['健康',  0.664, 0.512, 0.774, 0.605, 0.632, 0.772, 0.806, 0.532],
+  ['記憶',  -0.881, -0.566, -0.674, -0.484, -0.172, 0.176, 0.177, 0.321],
+  ['社交', -0.373, -0.477, -0.282, -0.188, -0.204, -0.410, -0.115, 0.120],
+  ['心理', 0.870, 0.787, 0.687, 0.790, 0.712, -0.132, -0.236, -0.3147],
+]
+
+//グラフを描画する
+var chart = c3.generate({
+  bindto: '#my-chart',
+  size: { width: 800, height: 600 },
+  data: {
+    x: 'mydate', // 時系列インデックスの項目名
+    //xFormat: '%m%d', // 時系列インデックスの日付フォーマット
+    columns: datasets,
+    //onclick: function(d,i){
+    //  console.log(d);
+    //}
+  },
+  axis: {
+    x: {
+      label: {
+        text: '週番号',
+        position: 'outer-middle'
+      }
+    },
+    y: {
+      label: {
+        text: 'スコア',
+        position: 'outer-middle'
+      }
+    }
+  }
+});
+
+function hide(dataLabel){
+  chart.hide([dataLabel]);
+};
+
+function show(dataLabel){
+  chart.show([dataLabel]);
+};
+
+</script>
+
+<script type="text/javascript">
+$(function(){
+  $('input[name="check"]').change(function() {
+    var isCheck = $(this).prop('checked'); //チェック状態の取得
+    var category = $(this).val();
+    if(isCheck){
+      show(category);
+    }else{
+      hide(category);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
